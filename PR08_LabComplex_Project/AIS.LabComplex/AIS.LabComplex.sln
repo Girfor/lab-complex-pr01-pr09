@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.Core", "src\AIS.Core\AIS.Core.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC100}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.Infrastructure", "src\AIS.Infrastructure\AIS.Infrastructure.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.API", "src\AIS.API\AIS.API.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.Demo", "src\AIS.Demo\AIS.Demo.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC400}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.UI", "src\AIS.UI\AIS.UI.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS.Tests", "tests\AIS.Tests\AIS.Tests.csproj", "{C418C9E0-4DA0-414B-9ED2-A711F3EDC600}"
+EndProject
+Global
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC100}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC200}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC300}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC400}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC500}.Release|Any CPU.Build.0 = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {C418C9E0-4DA0-414B-9ED2-A711F3EDC600}.Release|Any CPU.Build.0 = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(SolutionProperties) = preSolution
+        HideSolutionNode = FALSE
+    EndGlobalSection
+EndGlobal

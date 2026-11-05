@@ -1,0 +1,177 @@
+openapi: 3.1.1
+info:
+  title: AIS Laboratory Complex API
+  version: 1.0.0
+  description: Учебный REST API. X-Demo-Key работает только на loopback в Development.
+servers:
+  - url: http://localhost:5080
+security:
+  - demoKey: []
+paths:
+  /health:
+    get:
+      security: []
+      summary: Проверка доступности
+      responses:
+        '200':
+          description: Сервис работает
+  /api/v1/reagents:
+    get:
+      summary: Поиск и просмотр реактивов
+      parameters:
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: pageSize
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        '200':
+          description: Страница результатов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/Reagent' }
+                  total: { type: integer }
+                  page: { type: integer }
+                  pageSize: { type: integer }
+        '401': { description: Нужен локальный ключ }
+    post:
+      summary: Прием партии реактива
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReceiveReagentRequest' }
+      responses:
+        '201': { description: Реактив добавлен }
+        '401': { description: Нужен локальный ключ }
+        '403': { description: Недостаточно прав }
+        '409': { description: Конфликт повторной поставки }
+        '422': { description: Ошибка валидации }
+  /api/v1/bookings:
+    get:
+      summary: Просмотр броней
+      parameters:
+        - name: equipmentId
+          in: query
+          schema: { type: string }
+      responses:
+        '200': { description: Список броней }
+    post:
+      summary: Создать бронь прибора
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateBookingRequest' }
+      responses:
+        '201': { description: Бронь создана }
+        '409': { description: Период занят }
+        '422': { description: Некорректный интервал }
+  /api/v1/equipment/access:
+    post:
+      summary: Проверить право запуска сеанса работы на приборе
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AccessRequest' }
+      responses:
+        '200':
+          description: Доступ подтвержден
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AccessResponse' }
+        '401': { description: Отсутствует ключ }
+        '403': { description: Недостаточно прав }
+        '404': { description: Прибор не найден }
+        '409': { description: Нет активной брони }
+        '422': { description: Некорректный запрос }
+  /api/v1/integrations/supply:
+    post:
+      summary: Импорт накладной от системы снабжения
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SupplyItem' }
+      responses:
+        '200': { description: Импорт выполнен или повтор принят идемпотентно }
+        '409': { description: Коллизия поставки }
+        '422': { description: Ошибка сопоставления полей }
+components:
+  securitySchemes:
+    demoKey:
+      type: apiKey
+      in: header
+      name: X-Demo-Key
+  schemas:
+    Reagent:
+      type: object
+      required: [id, name, externalCode, lot, quantity, unit, expirationDate]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, maxLength: 200 }
+        externalCode: { type: string }
+        lot: { type: string }
+        quantity: { type: number, minimum: 0 }
+        unit: { type: string, enum: [g, ml] }
+        expirationDate: { type: string, format: date }
+        supplierCode: { type: string }
+        deliveryId: { type: string }
+    ReceiveReagentRequest:
+      type: object
+      required: [name, externalCode, lot, quantity, unit, expirationDate, supplierCode, deliveryId]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 200 }
+        externalCode: { type: string }
+        lot: { type: string }
+        quantity: { type: number, exclusiveMinimum: 0 }
+        unit: { type: string, enum: [g, ml] }
+        expirationDate: { type: string, format: date }
+        supplierCode: { type: string }
+        deliveryId: { type: string }
+    CreateBookingRequest:
+      type: object
+      required: [equipmentId, startsAt, endsAt]
+      properties:
+        equipmentId: { type: string, pattern: '^EQ-[0-9]{4,8}$' }
+        startsAt: { type: string, format: date-time }
+        endsAt: { type: string, format: date-time }
+    AccessRequest:
+      type: object
+      required: [requestId, userId, equipmentId, action, requestedAt]
+      properties:
+        requestId: { type: string, format: uuid }
+        userId: { type: string, format: uuid }
+        equipmentId: { type: string, pattern: '^EQ-[0-9]{4,8}$' }
+        action: { type: string, enum: [START_SESSION, END_SESSION] }
+        requestedAt: { type: string, format: date-time }
+    AccessResponse:
+      type: object
+      required: [requestId, allowed]
+      properties:
+        requestId: { type: string, format: uuid }
+        allowed: { type: boolean }
+        sessionId: { type: [string, 'null'], format: uuid }
+        validUntil: { type: [string, 'null'], format: date-time }
+    SupplyItem:
+      type: object
+      required: [supplyId, materialCode, title, lot, qty, uom, expiresOn, vendor]
+      properties:
+        supplyId: { type: string }
+        materialCode: { type: string }
+        title: { type: string }
+        lot: { type: string }
+        qty: { type: string, pattern: '^\d+(\.\d+)?$' }
+        uom: { type: string, enum: [kg, g, ml] }
+        expiresOn: { type: string, format: date }
+        vendor: { type: string }

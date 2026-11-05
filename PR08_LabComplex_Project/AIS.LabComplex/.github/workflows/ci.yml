@@ -1,0 +1,15 @@
+name: Build and smoke tests
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet restore AIS.LabComplex.sln
+      - run: dotnet build AIS.LabComplex.sln --no-restore
+      - run: dotnet run --project tests/AIS.Tests/AIS.Tests.csproj --no-build

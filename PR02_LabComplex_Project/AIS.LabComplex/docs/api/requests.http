@@ -1,0 +1,38 @@
+@base = http://localhost:5080
+@admin = local-admin-example-2026
+@lab = local-lab-example-2026
+@researcher = local-research-example-2026
+
+### Health
+GET {{base}}/health
+
+### Create equipment (admin)
+POST {{base}}/api/v1/equipment
+X-Demo-Key: {{admin}}
+Content-Type: application/json
+
+{ "id": "EQ-0042", "name": "Микроскоп" }
+
+### Receive reagent (lab assistant)
+POST {{base}}/api/v1/integrations/supply
+X-Demo-Key: {{lab}}
+Content-Type: application/json
+
+{
+  "supplyId": "DEL-2026-0178",
+  "materialCode": "CHEM-0091",
+  "title": "Натрий хлористый",
+  "lot": "L-247A",
+  "qty": "2.50",
+  "uom": "kg",
+  "expiresOn": "2027-10-31",
+  "vendor": "SUP-012"
+}
+
+### List reagents
+GET {{base}}/api/v1/reagents?page=1&pageSize=20
+X-Demo-Key: {{researcher}}
+
+### List equipment
+GET {{base}}/api/v1/equipment
+X-Demo-Key: {{researcher}}
