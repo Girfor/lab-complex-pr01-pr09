@@ -1,0 +1,41 @@
+name: PR05 LabComplex CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'hotfix/**'
+    paths:
+      - 'PR05_LabComplex_Project/**'
+      - '.github/workflows/pr05-ci.yml'
+      - 'CHANGELOG.md'
+  pull_request:
+    paths:
+      - 'PR05_LabComplex_Project/**'
+      - '.github/workflows/pr05-ci.yml'
+      - 'CHANGELOG.md'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke:
+    name: Build and smoke tests (PR05)
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: PR05_LabComplex_Project/AIS.LabComplex
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v4
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore AIS.LabComplex.sln
+      - name: Build
+        run: dotnet build AIS.LabComplex.sln -c Release --no-restore
+      - name: Smoke tests
+        run: dotnet run --project tests/AIS.Tests/AIS.Tests.csproj -c Release --no-build
